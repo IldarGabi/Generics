@@ -3,6 +3,7 @@ package ru.netology;
 import lombok.Data;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 @Data
 public class TicketsManager {
@@ -16,7 +17,7 @@ public class TicketsManager {
         repository.save(tickets);
     }
 
-    public Ticket[] findAll(String from, String to) {
+    public Ticket[] findAll(String from, String to, Comparator<Ticket> comparator) {
         Ticket[] newSearch = new Ticket[0];
         for (Ticket ticket : repository.getAll()) {
             if (ticket.getFromAirport().equals(from) && ticket.getToAirport().equals(to)) {
@@ -27,11 +28,11 @@ public class TicketsManager {
                 newSearch = tmp;
             }
         }
-        Arrays.sort(newSearch);
+        Arrays.sort(newSearch, comparator);
         return newSearch;
     }
 
-    public Ticket[] findFromOrTo(String from, String to) {
+    public Ticket[] findFromOrTo(String from, String to, Comparator<Ticket> comparator) {
         Ticket[] newSearch = new Ticket[0];
         for (Ticket ticket : repository.getAll()) {
             if (ticket.getFromAirport().equals(from) || ticket.getToAirport().equals(to)) {
@@ -42,7 +43,7 @@ public class TicketsManager {
                 newSearch = tmp;
             }
         }
-        Arrays.sort(newSearch);
+        Arrays.sort(newSearch, comparator);
         return newSearch;
     }
 }
