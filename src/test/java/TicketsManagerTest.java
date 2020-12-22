@@ -1,7 +1,4 @@
-import ru.netology.NotFoundException;
-import ru.netology.Ticket;
-import ru.netology.TicketsManager;
-import ru.netology.TicketsRepository;
+import ru.netology.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +10,7 @@ class TicketsManagerTest {
     private TicketsRepository repository = new TicketsRepository();
     private TicketsManager manager = new TicketsManager(repository);
 
-    Ticket ticket1 = new Ticket(1, 10000, "LED", "BRU", 120);
+    Ticket ticket1 = new Ticket(1, 10000, "LED", "BRU", 150);
     Ticket ticket2 = new Ticket(2, 20000, "LED", "BRU", 120);
     Ticket ticket3 = new Ticket(9, 5000, "VKO", "IJK", 90);
     Ticket ticket4 = new Ticket(8, 8000, "LED", "IJK", 120);
@@ -30,8 +27,8 @@ class TicketsManagerTest {
 
     @Test
     void searchByFromAndToAirport() {
-        Ticket[] expected = {ticket1, ticket2};
-        Ticket[] actual = manager.findAll("LED", "BRU");
+        Ticket[] expected = {ticket2, ticket1};
+        Ticket[] actual = manager.findAll("LED", "BRU", new TicketComparator());
         assertArrayEquals(actual, expected);
         System.out.println(Arrays.toString(actual));
     }
@@ -39,7 +36,7 @@ class TicketsManagerTest {
     @Test
     void searchByOnlyFromAirport() {
         Ticket[] expected = {ticket3, ticket5};
-        Ticket[] actual = manager.findFromOrTo("VKO", "");
+        Ticket[] actual = manager.findFromOrTo("VKO", "", new TicketComparator());
         assertArrayEquals(actual, expected);
         System.out.println(Arrays.toString(actual));
     }
@@ -47,7 +44,7 @@ class TicketsManagerTest {
     @Test
     void searchByOnlyToAirport() {
         Ticket[] expected = {ticket3, ticket4};
-        Ticket[] actual = manager.findFromOrTo("", "IJK");
+        Ticket[] actual = manager.findFromOrTo("", "IJK", new TicketComparator());
         assertArrayEquals(actual, expected);
         System.out.println(Arrays.toString(actual));
     }
@@ -55,7 +52,7 @@ class TicketsManagerTest {
     @Test
     void searchOneTicket (){
         Ticket[] expected = {ticket3};
-        Ticket[] actual = manager.findAll("VKO", "IJK");
+        Ticket[] actual = manager.findAll("VKO", "IJK", new TicketComparator());
         assertArrayEquals(actual, expected);
         System.out.println(Arrays.toString(actual));
     }
@@ -63,7 +60,7 @@ class TicketsManagerTest {
     @Test
     void notFoundTicket (){
         Ticket[] expected = {};
-        Ticket[] actual = manager.findAll("ALA", "IJK");
+        Ticket[] actual = manager.findAll("ALA", "IJK", new TicketComparator());
         assertArrayEquals(actual, expected);
         System.out.println(Arrays.toString(actual));
     }
